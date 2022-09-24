@@ -1,0 +1,19 @@
+{% extends "webapp/base.html" %} {% block content %} {% for obj in posts %}
+<div class="text-center container">
+  <div class="shadow-lg p-3 mb-2 bg-white rounded">
+    <h1>{{obj.title}}</h1>
+    <p>{{obj.body}}</p>
+
+    <form action="{% url 'posts:like-post' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="post_id" value="{{obj.id}}" />
+      {% if user not in obj.liked.all %}
+      <button class="btn btn-success" type="submit">Like</button>
+      {% else %}
+      <button class="btn btn-danger" type="submit">Unlike</button>
+      {% endif %}
+      <strong>{{ obj.liked.all.count }} likes</strong>
+    </form>
+  </div>
+</div>
+{% endfor %} {% endblock content %}
